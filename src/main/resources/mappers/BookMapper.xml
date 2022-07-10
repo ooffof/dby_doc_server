@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.cuizilin.dby.mapper.BookMapper">
+    <resultMap id="bookmap" type="Book" autoMapping="true">
+        <id column="id" property="id"></id>
+        <collection property="allList" column="id" select="top.cuizilin.dby.mapper.BooklistMapper.searchAllByBookId"></collection>
+        <collection property="tagList" column="id"
+                    select="top.cuizilin.dby.mapper.TagMapper.searchALlByBookId"></collection>
+    </resultMap>
+    <select id="searchAllByTagId" resultType="Book">
+        select *
+        from t_book
+                 join t_book_tag on book_id = id
+        where tag_id = #{tagId}
+    </select>
+    <select id="searchAllByBookId" resultType="Book">
+       select * from t_book_booklist where book_id = #{bookId}
+    </select>
+    <select id="searchAllByListId" resultType="Book">
+        select * from t_book join t_book_booklist on book_id = id where list_id = #{listId}
+    </select>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.cuizilin.dby.mapper.TagMapper">
+
+    <resultMap id="tagmap" type="Tag" autoMapping="true">
+        <id column="id" property="id"></id>
+        <collection property="bookList" column="id" select="top.cuizilin.dby.mapper.BookMapper.searchAllByTagId"></collection>
+    </resultMap>
+    <insert id="saveBookTag">
+        insert into t_book_tag(book_id, tag_id) values
+        <foreach collection="tagIds" separator="," item="item">
+            (#{bookId}, #{item})
+        </foreach>
+    </insert>
+    <delete id="deleteTagsByBookId">
+        delete from t_book_tag where book_id = #{bookId}
+    </delete>
+
+    <select id="searchALlByBookId" resultType="Tag">
+        select *
+        from t_book_tag
+                 join t_tag on t_tag.id = t_book_tag.tag_id
+        where t_book_tag.book_id = #{bookId}
+    </select>
+</mapper>
